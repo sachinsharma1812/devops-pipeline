@@ -1,0 +1,32 @@
+name: CI Pipeline
+
+on:
+  # Trigger the workflow on push to main or pull requests targeting main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Specify the environment to run the workflow
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Install Tidy for HTML linting
+      - name: Install HTML Linter
+        run: |
+          sudo apt-get update
+          sudo apt-get install tidy
+
+      # Step 3: Run HTML Linter to check index.html file
+      - name: Run HTML Linter
+        run: |
+          tidy -errors -quiet index.html || true
+
